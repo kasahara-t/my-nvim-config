@@ -117,6 +117,18 @@ vim.opt.showmode = false
 --  Remove this option if you want your OS clipboard to remain independent.
 --  See `:help 'clipboard'`
 vim.opt.clipboard = 'unnamedplus'
+vim.g.clipboard = {
+  name = 'myClipboard',
+  copy = {
+    ['+'] = 'win32yank.exe -i',
+    ['*'] = 'win32yank.exe -i',
+  },
+  paste = {
+    ['+'] = 'win32yank.exe -o',
+    ['*'] = 'win32yank.exe -o',
+  },
+  cache_enabled = 1,
+}
 
 -- Enable break indent
 vim.opt.breakindent = true
