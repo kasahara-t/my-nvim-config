@@ -676,6 +676,21 @@ if not vim.g.vscode then
           --
           -- No, but seriously. Please read `:help ins-completion`, it is really good!
           mapping = cmp.mapping.preset.insert {
+            ['<CR>'] = cmp.mapping.confirm { select = true },
+            ['<Tab>'] = function(fallback)
+              if cmp.visible() then
+                cmp.select_next_item()
+              else
+                fallback() -- 通常のTab動作
+              end
+            end,
+            ['<S-Tab>'] = function(fallback)
+              if cmp.visible() then
+                cmp.select_prev_item()
+              else
+                fallback() -- 通常のShift+Tab動作
+              end
+            end,
             -- Select the [n]ext item
             ['<C-n>'] = cmp.mapping.select_next_item(),
             -- Select the [p]revious item
