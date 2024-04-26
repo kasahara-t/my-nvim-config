@@ -9,10 +9,12 @@ return {
     'MunifTanjim/nui.nvim',
   },
   config = function()
-    require('neo-tree').setup {
-      source_selector = {
-        winbar = true,
-      },
-    }
+    if not vim.g.vscode then
+      require('neo-tree').setup {
+        source_selector = {
+          winbar = true,
+        },
+      }
+    end
   end,
 }
