@@ -646,6 +646,9 @@ if not vim.g.vscode then
         local luasnip = require 'luasnip'
         local lspkind = require 'lspkind'
         luasnip.config.setup {}
+        require('luasnip.loaders.from_lua').load {
+          paths = '~/.config/nvim/lua/custom/snippets',
+        }
 
         cmp.setup {
           formatting = {
