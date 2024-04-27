@@ -149,21 +149,6 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   end,
 })
 
--- タブ操作関連
-vim.o.showtabline = 2
-
-vim.api.nvim_set_keymap('n', '[Tag]', '<Nop>', { noremap = true })
-vim.api.nvim_set_keymap('n', 't', '[Tag]', {})
-
-for n = 1, 9 do
-  vim.api.nvim_set_keymap('n', '[Tag]' .. n, ':tabnext ' .. n .. '<CR>', { silent = true, noremap = true })
-end
-
-vim.api.nvim_set_keymap('n', '[Tag]c', ':tablast <bar> tabnew<CR>', { silent = true, noremap = true })
-vim.api.nvim_set_keymap('n', '[Tag]x', ':tabclose<CR>', { silent = true, noremap = true })
-vim.api.nvim_set_keymap('n', '[Tag]n', ':tabnext<CR>', { silent = true, noremap = true })
-vim.api.nvim_set_keymap('n', '[Tag]p', ':tabprevious<CR>', { silent = true, noremap = true })
-
 if not vim.g.vscode then
   -- [[ Install `lazy.nvim` plugin manager ]]
   --    See `:help lazy.nvim.txt` or https://github.com/folke/lazy.nvim for more info
