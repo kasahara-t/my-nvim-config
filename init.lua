@@ -1,3 +1,19 @@
+-- ターミナルモードのトグル関数
+function toggle_terminal()
+  local term_bufnr = vim.t.term_bufnr
+  if term_bufnr and vim.api.nvim_buf_is_valid(term_bufnr) then
+    -- ターミナルが開いていれば閉じる
+    vim.api.nvim_buf_delete(term_bufnr, { force = true })
+    vim.t.term_bufnr = nil
+  else
+    -- 新しいターミナルを下側に開く
+    vim.cmd 'botright split | resize 20 | terminal'
+    term_bufnr = vim.api.nvim_get_current_buf()
+    vim.t.term_bufnr = term_bufnr
+    vim.cmd 'startinsert'
+  end
+end
+
 if not vim.g.vscode then
   -- Set <space> as the leader key
   -- See `:help mapleader`
@@ -62,6 +78,8 @@ if not vim.g.vscode then
 
   -- Minimal number of screen lines to keep above and below the cursor.
   vim.opt.scrolloff = 10
+
+  vim.api.nvim_set_keymap('n', '<C-t>', '<cmd>lua toggle_terminal()<CR>', { noremap = true, silent = true })
 else
   -- VsCode特有の設定
   local vscode = require 'vscode-neovim'
