@@ -4,7 +4,7 @@ local t = ls.t
 local i = ls.i
 
 return {
-  s('!!!', {
+  s('main_atcoder', {
     t {
       '#include <bits/stdc++.h>',
       'using namespace std;',
