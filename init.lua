@@ -1,13 +1,35 @@
--- ターミナルモードのトグル関数
+-- バックアップファイルを作らない
+vim.opt.backup = false
+-- スワップファイルを作らない
+vim.opt.swapfile = false
+-- 編集中のファイルが変更されたら自動で読み直す
+vim.opt.autoread = true
+-- バッファが編集中でもその他のファイルを開けるように
+vim.opt.hidden = true
+
 function toggle_terminal()
   local term_bufnr = vim.t.term_bufnr
+  -- 現在のウィンドウの高さを取得し、10%の高さを計算
+  local win_height = vim.api.nvim_win_get_height(0)
+  local term_height = math.ceil(win_height * 0.3)
+  -- 計算された高さが10より小さい場合は10に設定
+  if term_height < 10 then
+    term_height = 10
+  end
+
   if term_bufnr and vim.api.nvim_buf_is_valid(term_bufnr) then
-    -- ターミナルが開いていれば閉じる
-    vim.api.nvim_buf_delete(term_bufnr, { force = true })
-    vim.t.term_bufnr = nil
+    -- ターミナルバッファが存在するか確認
+    if vim.fn.bufwinnr(term_bufnr) ~= -1 then
+      -- ターミナルバッファが表示中のウィンドウにあればそのウィンドウを閉じる
+      vim.cmd 'hide'
+    else
+      -- ターミナルバッファが存在するが表示されていない場合、新たに分割して表示
+      vim.cmd('botright split | resize ' .. term_height .. ' | buffer ' .. term_bufnr)
+      vim.cmd 'startinsert'
+    end
   else
     -- 新しいターミナルを下側に開く
-    vim.cmd 'botright split | resize 20 | terminal'
+    vim.cmd('botright split | resize ' .. term_height .. ' | terminal')
     term_bufnr = vim.api.nvim_get_current_buf()
     vim.t.term_bufnr = term_bufnr
     vim.cmd 'startinsert'
@@ -80,6 +102,7 @@ if not vim.g.vscode then
   vim.opt.scrolloff = 10
 
   vim.api.nvim_set_keymap('n', '<C-t>', '<cmd>lua toggle_terminal()<CR>', { noremap = true, silent = true })
+  vim.api.nvim_set_keymap('t', '<C-t>', '<C-\\><C-n>:lua toggle_terminal()<CR>', { noremap = true, silent = true })
 else
   -- VsCode特有の設定
   local vscode = require 'vscode-neovim'
