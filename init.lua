@@ -37,6 +37,11 @@ function toggle_terminal()
 end
 
 if not vim.g.vscode then
+  vim.opt.tabstop = 4
+  vim.opt.shiftwidth = 4
+  vim.opt.expandtab = true
+  vim.bo.softtabstop = 4
+
   -- Set <space> as the leader key
   -- See `:help mapleader`
   --  NOTE: Must happen before plugins are loaded (otherwise wrong leader will be used)
